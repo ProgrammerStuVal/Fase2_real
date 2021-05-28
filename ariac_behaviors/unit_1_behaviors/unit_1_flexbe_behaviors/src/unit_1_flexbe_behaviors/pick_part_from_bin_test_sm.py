@@ -46,7 +46,7 @@ class pick_part_from_bin_testSM(Behavior):
 	def create(self):
 		# x:30 y:365, x:130 y:365
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-		_state_machine.userdata.part = 'gear_part'
+		_state_machine.userdata.part = 'gasket_part'
 		_state_machine.userdata.robot_namespace = '/ariac/arm1'
 		_state_machine.userdata.robot = 1
 
