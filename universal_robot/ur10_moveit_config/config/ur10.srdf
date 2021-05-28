@@ -62,7 +62,7 @@
         <joint name="wrist_3_joint" value="0" />
     </group_state>
     <!-- The following poses are for arm1 only-->
-    <group_state name="R1bin1PreGrasp" group="manipulator">
+    <group_state name="R1bin6PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="1.18" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -71,7 +71,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R1bin2PreGrasp" group="manipulator">
+    <group_state name="R1bin5PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="0.33" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -80,7 +80,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R1bin3PreGrasp" group="manipulator">
+    <group_state name="R1bin4PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="-0.43" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -89,7 +89,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R1bin4PreGrasp" group="manipulator">
+    <group_state name="R1bin3PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="-1.18" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -99,7 +99,7 @@
         <joint name="wrist_3_joint" value="0" />
     </group_state>
     <!-- The following poses are for arm2 only-->
-    <group_state name="R2bin3PreGrasp" group="manipulator">
+    <group_state name="R2bin4PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="1.18" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -108,7 +108,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R2bin4PreGrasp" group="manipulator">
+    <group_state name="R2bin3PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="0.33" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -117,7 +117,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R2bin5PreGrasp" group="manipulator">
+    <group_state name="R2bin2PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="-0.43" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -126,7 +126,7 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
-    <group_state name="R2bin6PreGrasp" group="manipulator">
+    <group_state name="R2bin1PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="-1.18" />
         <joint name="shoulder_pan_joint" value="3.11" />
         <joint name="shoulder_lift_joint" value="-2.01" />
@@ -136,7 +136,7 @@
         <joint name="wrist_3_joint" value="0" />
     </group_state>
 
-    
+    <!-- The following poses are for conveyer  pick  up places-->
     <group_state name="R1ToPickUp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="0.33" />
         <joint name="shoulder_pan_joint" value="-3.11" />
