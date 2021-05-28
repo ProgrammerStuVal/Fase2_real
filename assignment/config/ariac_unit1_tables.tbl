@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<tables>
+    <table name = "unit1_table">
+    </table>
+    <table name = "andere_tabel_voor_unit1">
+    </table>
+</tables>
