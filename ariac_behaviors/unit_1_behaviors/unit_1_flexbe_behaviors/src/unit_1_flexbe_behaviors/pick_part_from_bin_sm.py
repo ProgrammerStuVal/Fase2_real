@@ -72,7 +72,7 @@ class pick_part_from_binSM(Behavior):
 		_state_machine.userdata.robot = ''
 		_state_machine.userdata.camera_ref_frame = 'world'
 		_state_machine.userdata.tool_link = 'ee_link'
-		_state_machine.userdata.part_height = 0.035
+		_state_machine.userdata.part_height = 0.034
 		_state_machine.userdata.part_rotation = 0
 		_state_machine.userdata.gripper1_service = '/ariac/arm1/gripper/control'
 		_state_machine.userdata.gripper2_service = '/ariac/arm2/gripper/control'
