@@ -44,4 +44,15 @@
         <camera_frame value="logical_camera_4_frame" />
       </bin>
     </table>
+    <table name="part_heights">
+      <part name="gear_part">
+        <part_height value="0.025" />
+      </part>
+      <part name="gasket_part">
+        <part_height value="0.035" />
+      </part>
+      <part name="piston_rod_part">
+        <part_height value="0.019" />
+      </part>
+    </table>
 </tables>

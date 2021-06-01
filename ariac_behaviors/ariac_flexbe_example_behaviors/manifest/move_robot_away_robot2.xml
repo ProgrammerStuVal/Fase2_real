@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="move_robot_away_robot2">
+
+	<executable package_path="ariac_flexbe_example_behaviors.move_robot_away_robot2_sm" class="move_robot_away_robot2SM" />
+	<tagstring></tagstring>
+	<author>Nick</author>
+	<date>Mon May 31 2021</date>
+	<description>
+		Behavior to move robot2 away
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

@@ -8,7 +8,7 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from unit_1_flexbe_behaviors.pick_part_from_bin_sm import pick_part_from_binSM
+from unit_1_flexbe_behaviors.place_part_on_agv_sm import place_part_on_agvSM
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -16,23 +16,23 @@ from unit_1_flexbe_behaviors.pick_part_from_bin_sm import pick_part_from_binSM
 
 
 '''
-Created on Sun Apr 25 2021
-@author: docent
+Created on Mon May 31 2021
+@author: Nick
 '''
-class pick_part_from_bin_testSM(Behavior):
+class place_part_on_agv_testSM(Behavior):
 	'''
-	testbench to test the pick_part_from_bin behavior
+	testing behavior
 	'''
 
 
 	def __init__(self):
-		super(pick_part_from_bin_testSM, self).__init__()
-		self.name = 'pick_part_from_bin_test'
+		super(place_part_on_agv_testSM, self).__init__()
+		self.name = 'place_part_on_agv_test'
 
 		# parameters of this behavior
 
 		# references to used behaviors
-		self.add_behavior(pick_part_from_binSM, 'PickPartFromBin')
+		self.add_behavior(place_part_on_agvSM, 'place_part_on_agv')
 
 		# Additional initialization code can be added inside the following tags
 		# [MANUAL_INIT]
@@ -44,11 +44,11 @@ class pick_part_from_bin_testSM(Behavior):
 
 
 	def create(self):
-		# x:30 y:365, x:130 y:365
+		# x:30 y:463, x:130 y:463
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
-		_state_machine.userdata.producttype = 'gasket_part'
-		_state_machine.userdata.robot_namespace = '/ariac/arm1'
-		_state_machine.userdata.robot = 1
+		_state_machine.userdata.producttype = 'gear_part'
+		_state_machine.userdata.AGVid = 'agv1'
+		_state_machine.userdata.productpose = '1'
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
@@ -57,12 +57,12 @@ class pick_part_from_bin_testSM(Behavior):
 
 
 		with _state_machine:
-			# x:103 y:47
-			OperatableStateMachine.add('PickPartFromBin',
-										self.use_behavior(pick_part_from_binSM, 'PickPartFromBin'),
+			# x:330 y:157
+			OperatableStateMachine.add('place_part_on_agv',
+										self.use_behavior(place_part_on_agvSM, 'place_part_on_agv'),
 										transitions={'finished': 'finished', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
-										remapping={'producttype': 'producttype', 'robot_namespace': 'robot_namespace', 'robot': 'robot'})
+										remapping={'producttype': 'producttype', 'AGVid': 'AGVid', 'productpose': 'productpose', 'productpose': 'productpose'})
 
 
 		return _state_machine

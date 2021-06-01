@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="place_part_on_agv_test">
+
+	<executable package_path="unit_1_flexbe_behaviors.place_part_on_agv_test_sm" class="place_part_on_agv_testSM" />
+	<tagstring></tagstring>
+	<author>Nick</author>
+	<date>Mon May 31 2021</date>
+	<description>
+		testing behavior
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="place_part_on_agv" />
+
+	<!-- Available Parameters -->
+
+</behavior>
