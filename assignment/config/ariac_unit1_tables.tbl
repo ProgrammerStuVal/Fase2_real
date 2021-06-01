@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <tables>
-    <table name = "robot_1_table">
+    <table name ="robot_1_table">
       <bin name="bin6">
 		    <robot_config value="R1bin6PreGrasp" />
 		    <camera_topic value="/ariac/logical_camera_6" />
@@ -21,8 +21,13 @@
 		    <camera_topic value="/ariac/logical_camera_3" />
 		    <camera_frame value="logical_camera_3_frame" />
 	    </bin>
+      <bin name="bin2">
+        <robot_config value="R1bin2PreGrasp" />
+        <camera_topic value="/ariac/logical_camera_2" />
+        <camera_frame value="logical_camera_2_frame" />
+      </bin>
     </table>
-    <table name = "robot_2_table">
+    <table name ="robot_2_table">
       <bin name="bin1">
         <robot_config value="R2bin1PreGrasp" />
         <camera_topic value="/ariac/logical_camera_1" />
@@ -42,6 +47,11 @@
         <robot_config value="R2bin4PreGrasp" />
         <camera_topic value="/ariac/logical_camera_4" />
         <camera_frame value="logical_camera_4_frame" />
+      </bin>
+      <bin name="bin5">
+        <robot_config value="R2bin5PreGrasp" />
+        <camera_topic value="/ariac/logical_camera_5" />
+        <camera_frame value="logical_camera_5_frame" />
       </bin>
     </table>
     <table name="part_heights">

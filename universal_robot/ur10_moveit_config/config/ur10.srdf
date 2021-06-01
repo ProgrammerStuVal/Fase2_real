@@ -99,8 +99,26 @@
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
+    <group_state name="R1bin2PreGrasp" group="manipulator">
+        <joint name="linear_arm_actuator_joint" value="-1.18" />
+        <joint name="shoulder_pan_joint" value="3.75" />
+        <joint name="shoulder_lift_joint" value="-1.01" />
+        <joint name="elbow_joint" value="1.88" />
+        <joint name="wrist_1_joint" value="3.77" />
+        <joint name="wrist_2_joint" value="-1.51" />
+        <joint name="wrist_3_joint" value="0" />
+    </group_state>
 
     <!-- The following poses are for arm2 only-->
+    <group_state name="R2bin5PreGrasp" group="manipulator">
+        <joint name="linear_arm_actuator_joint" value="1.18" />
+        <joint name="shoulder_pan_joint" value="2.40" />
+        <joint name="shoulder_lift_joint" value="-1.01" />
+        <joint name="elbow_joint" value="1.88" />
+        <joint name="wrist_1_joint" value="3.77" />
+        <joint name="wrist_2_joint" value="-1.51" />
+        <joint name="wrist_3_joint" value="0" />
+    </group_state>
     <group_state name="R2bin4PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="1.18" />
         <joint name="shoulder_pan_joint" value="2.65" />
@@ -113,9 +131,9 @@
     <group_state name="R2bin3PreGrasp" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="0.64" />
         <joint name="shoulder_pan_joint" value="2.65" />
-        <joint name="shoulder_lift_joint" value="-2.14" />
-        <joint name="elbow_joint" value="2.76" />
-        <joint name="wrist_1_joint" value="3.26" />
+        <joint name="shoulder_lift_joint" value="-1.00" />
+        <joint name="elbow_joint" value="1.88" />
+        <joint name="wrist_1_joint" value="3.77" />
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>
@@ -170,10 +188,10 @@
 
     <group_state name="R2AGV" group="manipulator">
         <joint name="linear_arm_actuator_joint" value="-1.18" />
-        <joint name="shoulder_pan_joint" value="4.53" />
-        <joint name="shoulder_lift_joint" value="-2.40" />
-        <joint name="elbow_joint" value="3.14" />
-        <joint name="wrist_1_joint" value="3.3" />
+        <joint name="shoulder_pan_joint" value="4.14" />
+        <joint name="shoulder_lift_joint" value="-2.12" />
+        <joint name="elbow_joint" value="2.64" />
+        <joint name="wrist_1_joint" value="3.77" />
         <joint name="wrist_2_joint" value="-1.51" />
         <joint name="wrist_3_joint" value="0" />
     </group_state>

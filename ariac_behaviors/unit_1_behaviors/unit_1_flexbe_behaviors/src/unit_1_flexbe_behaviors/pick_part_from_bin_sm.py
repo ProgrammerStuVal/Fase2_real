@@ -14,12 +14,14 @@ from ariac_flexbe_states.compute_grasp_ariac_state import ComputeGraspAriacState
 from ariac_flexbe_states.detect_part_camera_ariac_state import DetectPartCameraAriacState
 from ariac_flexbe_states.get_vacuum_gripper_status_state import GetVacuumGripperStatusState
 from ariac_flexbe_states.lookup_from_table import LookupFromTableState
+from ariac_flexbe_states.message_state import MessageState
 from ariac_flexbe_states.moveit_to_joints_dyn_ariac_state import MoveitToJointsDynAriacState
 from ariac_flexbe_states.srdf_state_to_moveit_ariac_state import SrdfStateToMoveitAriac
 from ariac_flexbe_states.vacuum_gripper_control_state import VacuumGripperControlState
 from ariac_logistics_flexbe_states.get_material_locations import GetMaterialLocationsState
 from ariac_support_flexbe_states.equal_state import EqualState
 from ariac_support_flexbe_states.get_item_from_list_state import GetItemFromListState
+from ariac_support_flexbe_states.text_to_float_state import TextToFloatState
 from flexbe_states.wait_state import WaitState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
@@ -76,7 +78,7 @@ class pick_part_from_binSM(Behavior):
 		_state_machine.userdata.robot = ''
 		_state_machine.userdata.camera_ref_frame = 'world'
 		_state_machine.userdata.tool_link = 'ee_link'
-		_state_machine.userdata.part_height = 0.030
+		_state_machine.userdata.part_height = 0.035
 		_state_machine.userdata.part_rotation = 0
 		_state_machine.userdata.gripper1_service = '/ariac/arm1/gripper/control'
 		_state_machine.userdata.gripper2_service = '/ariac/arm2/gripper/control'
@@ -124,7 +126,7 @@ class pick_part_from_binSM(Behavior):
 			# x:193 y:64
 			OperatableStateMachine.add('GetBinFromLocations',
 										GetItemFromListState(),
-										transitions={'done': 'Differ r1 from r2', 'invalid_index': 'failed'},
+										transitions={'done': 'look for part hight', 'invalid_index': 'failed'},
 										autonomy={'done': Autonomy.Off, 'invalid_index': Autonomy.Off},
 										remapping={'list': 'locations', 'index': 'zero', 'item': 'bin'})
 
@@ -173,14 +175,14 @@ class pick_part_from_binSM(Behavior):
 			# x:1410 y:584
 			OperatableStateMachine.add('MoveR1ToPick1',
 										MoveitToJointsDynAriacState(),
-										transitions={'reached': 'Differ r1 from r2_2', 'planning_failed': 'WaitRetry3', 'control_failed': 'failed'},
+										transitions={'reached': 'Differ r1 from r2_2', 'planning_failed': 'retry move to pick', 'control_failed': 'retry move to pick'},
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off},
 										remapping={'action_topic_namespace': 'robot_namespace', 'move_group': 'move_group', 'action_topic': 'action_topic', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
 			# x:1446 y:392
 			OperatableStateMachine.add('MoveToBin',
 										MoveitToJointsDynAriacState(),
-										transitions={'reached': 'ComputePick', 'planning_failed': 'failed', 'control_failed': 'failed'},
+										transitions={'reached': 'ComputePick', 'planning_failed': 'retry move to bin', 'control_failed': 'retry move to bin'},
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off},
 										remapping={'action_topic_namespace': 'robot_namespace', 'move_group': 'move_group', 'action_topic': 'action_topic', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
@@ -196,12 +198,6 @@ class pick_part_from_binSM(Behavior):
 										self.use_behavior(Move_robot_away_robot1SM, 'Move_robot_away_robot1'),
 										transitions={'finished': 'LookupCameraTopic_2', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
-
-			# x:1426 y:722
-			OperatableStateMachine.add('WaitRetry3',
-										WaitState(wait_time=1),
-										transitions={'done': 'MoveR1ToPick1'},
-										autonomy={'done': Autonomy.Off})
 
 			# x:1018 y:477
 			OperatableStateMachine.add('activate gripper1-1',
@@ -231,6 +227,13 @@ class pick_part_from_binSM(Behavior):
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'service_name': 'gripper2_service'})
 
+			# x:378 y:156
+			OperatableStateMachine.add('converting text to float',
+										TextToFloatState(),
+										transitions={'done': 'Differ r1 from r2'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'text_value': 'part_height', 'float_value': 'part_height_float'})
+
 			# x:834 y:481
 			OperatableStateMachine.add('deactivate gripper1',
 										VacuumGripperControlState(enable=False),
@@ -259,6 +262,13 @@ class pick_part_from_binSM(Behavior):
 										autonomy={'continue': Autonomy.Off, 'fail': Autonomy.Off},
 										remapping={'topic_name': 'gripper2_status_topic', 'enabled': 'False', 'attached': 'False'})
 
+			# x:53 y:209
+			OperatableStateMachine.add('look for part hight',
+										LookupFromTableState(parameter_name='/ariac_tables_unit1', table_name='part_heights', index_title='part', column_title='part_height'),
+										transitions={'found': 'part_height', 'not_found': 'failed'},
+										autonomy={'found': Autonomy.Off, 'not_found': Autonomy.Off},
+										remapping={'index_value': 'producttype', 'column_value': 'part_height'})
+
 			# x:1490 y:308
 			OperatableStateMachine.add('movePre',
 										SrdfStateToMoveitAriac(),
@@ -279,9 +289,28 @@ class pick_part_from_binSM(Behavior):
 										transitions={'finished': 'LookupCameraTopic', 'failed': 'failed'},
 										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit})
 
+			# x:225 y:153
+			OperatableStateMachine.add('part_height',
+										MessageState(),
+										transitions={'continue': 'converting text to float'},
+										autonomy={'continue': Autonomy.Off},
+										remapping={'message': 'part_height'})
+
+			# x:1660 y:387
+			OperatableStateMachine.add('retry move to bin',
+										WaitState(wait_time=1),
+										transitions={'done': 'MoveToBin'},
+										autonomy={'done': Autonomy.Off})
+
+			# x:1635 y:578
+			OperatableStateMachine.add('retry move to pick',
+										WaitState(wait_time=1),
+										transitions={'done': 'DetectCameraPart'},
+										autonomy={'done': Autonomy.Off})
+
 			# x:334 y:329
 			OperatableStateMachine.add('wait for gripper',
-										WaitState(wait_time=3),
+										WaitState(wait_time=1),
 										transitions={'done': 'movePre_2'},
 										autonomy={'done': Autonomy.Off})
 
@@ -290,7 +319,7 @@ class pick_part_from_binSM(Behavior):
 										ComputeGraspAriacState(joint_names=['linear_arm_actuator_joint', 'shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']),
 										transitions={'continue': 'MoveR1ToPick1', 'failed': 'failed'},
 										autonomy={'continue': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'move_group': 'move_group', 'action_topic_namespace': 'robot_namespace', 'tool_link': 'tool_link', 'pose': 'pose', 'offset': 'part_height', 'rotation': 'part_rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
+										remapping={'move_group': 'move_group', 'action_topic_namespace': 'robot_namespace', 'tool_link': 'tool_link', 'pose': 'pose', 'offset': 'part_height_float', 'rotation': 'part_rotation', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
 
 		return _state_machine

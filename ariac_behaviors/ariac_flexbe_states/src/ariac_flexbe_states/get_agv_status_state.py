@@ -70,7 +70,7 @@ class GetAgvStatusState(EventState):
 		else:
 			if userdata.agv_id == 'agv2':
 				status = rospy.wait_for_message('/ariac/agv2/state', String)
-				userdata.agv_status = status.data
+				userdata.agv_state = status.data
 				return 'continue'
 			else:
 				userdata.agv_state = None
