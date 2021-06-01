@@ -9,6 +9,7 @@
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from ariac_flexbe_example_behaviors.get_products_sm import get_productsSM
+from ariac_flexbe_example_behaviors.notify_shipment_ready_sm import notify_shipment_readySM
 from ariac_flexbe_states.message_state import MessageState
 from ariac_logistics_flexbe_states.get_products_from_shipment_state import GetProductsFromShipmentState
 from ariac_support_flexbe_states.add_numeric_state import AddNumericState
@@ -40,6 +41,7 @@ This example is a part of the order example.
 
 		# references to used behaviors
 		self.add_behavior(get_productsSM, 'get_products')
+		self.add_behavior(notify_shipment_readySM, 'notify_shipment_ready')
 
 		# Additional initialization code can be added inside the following tags
 		# [MANUAL_INIT]
@@ -104,9 +106,16 @@ This example is a part of the order example.
 			# x:1008 y:51
 			OperatableStateMachine.add('get_products',
 										self.use_behavior(get_productsSM, 'get_products'),
-										transitions={'finished': 'IncrementShipmentsIterator', 'fail': 'fail'},
+										transitions={'finished': 'notify_shipment_ready', 'fail': 'fail'},
 										autonomy={'finished': Autonomy.Inherit, 'fail': Autonomy.Inherit},
 										remapping={'Products': 'Products', 'NumberOfProducts': 'NumberOfProducts', 'AGVid': 'AgvID', 'robot_namespace': 'robot_namespace'})
+
+			# x:1087 y:312
+			OperatableStateMachine.add('notify_shipment_ready',
+										self.use_behavior(notify_shipment_readySM, 'notify_shipment_ready'),
+										transitions={'finished': 'IncrementShipmentsIterator', 'failed': 'fail'},
+										autonomy={'finished': Autonomy.Inherit, 'failed': Autonomy.Inherit},
+										remapping={'agv_id': 'AgvID', 'shipment_type': 'ShipmentType'})
 
 			# x:797 y:16
 			OperatableStateMachine.add('robot 1 namespace',

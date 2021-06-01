@@ -15,6 +15,7 @@ This example is a part of the order example.
 
 	<!-- Contained Behaviors -->
 	<contains name="get_products" />
+	<contains name="notify_shipment_ready" />
 
 	<!-- Available Parameters -->
 

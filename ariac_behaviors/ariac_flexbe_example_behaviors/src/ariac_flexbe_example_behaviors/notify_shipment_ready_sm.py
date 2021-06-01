@@ -8,10 +8,10 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from flexbe_states.wait_state import WaitState
-from ariac_flexbe_states.notify_shipment_ready_state import NotifyShipmentReadyState
 from ariac_flexbe_states.get_agv_status_state import GetAgvStatusState
+from ariac_flexbe_states.notify_shipment_ready_state import NotifyShipmentReadyState
 from ariac_support_flexbe_states.equal_state import EqualState
+from flexbe_states.wait_state import WaitState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -48,7 +48,7 @@ This is a part of the ariac_example.
 
 	def create(self):
 		# x:744 y:163, x:229 y:196
-		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
+		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'], input_keys=['agv_id', 'shipment_type'])
 		_state_machine.userdata.agv_id = "agv1"
 		_state_machine.userdata.shipment_type = 'order_0_shepment_0'
 		_state_machine.userdata.inspection_result = ""
@@ -77,18 +77,18 @@ This is a part of the ariac_example.
 										autonomy={'continue': Autonomy.Off, 'fail': Autonomy.Off},
 										remapping={'agv_id': 'agv_id', 'agv_state': 'agv_state'})
 
+			# x:408 y:42
+			OperatableStateMachine.add('Wait',
+										WaitState(wait_time=1),
+										transitions={'done': 'GetAgvState'},
+										autonomy={'done': Autonomy.Off})
+
 			# x:503 y:161
 			OperatableStateMachine.add('AgvReady',
 										EqualState(),
 										transitions={'true': 'finished', 'false': 'Wait'},
 										autonomy={'true': Autonomy.Off, 'false': Autonomy.Off},
 										remapping={'value_a': 'agv_state', 'value_b': 'agv_ready_state'})
-
-			# x:408 y:42
-			OperatableStateMachine.add('Wait',
-										WaitState(wait_time=1),
-										transitions={'done': 'GetAgvState'},
-										autonomy={'done': Autonomy.Off})
 
 
 		return _state_machine
