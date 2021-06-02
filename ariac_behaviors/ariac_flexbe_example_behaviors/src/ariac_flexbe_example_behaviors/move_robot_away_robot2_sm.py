@@ -54,6 +54,7 @@ class move_robot_away_robot2SM(Behavior):
 		_state_machine.userdata.joint_names = []
 		_state_machine.userdata.robot_name = ''
 		_state_machine.userdata.robot_config = 'R2bin1PreGrasp'
+		_state_machine.userdata.pre_home = 'R2bin2PreGrasp'
 
 		# Additional creation code can be added inside the following tags
 		# [MANUAL_CREATE]
@@ -62,7 +63,21 @@ class move_robot_away_robot2SM(Behavior):
 
 
 		with _state_machine:
-			# x:453 y:68
+			# x:75 y:99
+			OperatableStateMachine.add('movePre prehome',
+										SrdfStateToMoveitAriac(),
+										transitions={'reached': 'MoveTo bin 2', 'planning_failed': 'failed', 'control_failed': 'failed', 'param_error': 'failed'},
+										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off, 'param_error': Autonomy.Off},
+										remapping={'config_name': 'pre_home', 'move_group': 'move_group', 'action_topic_namespace': 'robot_namespace', 'action_topic': 'action_topic', 'robot_name': 'robot_name', 'config_name_out': 'config_name_out', 'move_group_out': 'move_group_out', 'robot_name_out': 'robot_name_out', 'action_topic_out': 'action_topic_out', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
+
+			# x:676 y:101
+			OperatableStateMachine.add('MoveToBin',
+										MoveitToJointsDynAriacState(),
+										transitions={'reached': 'finished', 'planning_failed': 'retry move to bin', 'control_failed': 'retry move to bin'},
+										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off},
+										remapping={'action_topic_namespace': 'robot_namespace', 'move_group': 'move_group', 'action_topic': 'action_topic', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
+
+			# x:459 y:99
 			OperatableStateMachine.add('movePre',
 										SrdfStateToMoveitAriac(),
 										transitions={'reached': 'MoveToBin', 'planning_failed': 'failed', 'control_failed': 'failed', 'param_error': 'failed'},
@@ -72,13 +87,13 @@ class move_robot_away_robot2SM(Behavior):
 			# x:711 y:248
 			OperatableStateMachine.add('retry move to bin',
 										WaitState(wait_time=1),
-										transitions={'done': 'finished'},
+										transitions={'done': 'movePre prehome'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:685 y:48
-			OperatableStateMachine.add('MoveToBin',
+			# x:239 y:98
+			OperatableStateMachine.add('MoveTo bin 2',
 										MoveitToJointsDynAriacState(),
-										transitions={'reached': 'finished', 'planning_failed': 'retry move to bin', 'control_failed': 'retry move to bin'},
+										transitions={'reached': 'movePre', 'planning_failed': 'failed', 'control_failed': 'failed'},
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off},
 										remapping={'action_topic_namespace': 'robot_namespace', 'move_group': 'move_group', 'action_topic': 'action_topic', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 

@@ -85,7 +85,7 @@ class pick_part_from_binSM(Behavior):
 		_state_machine.userdata.gripper1_status_topic = '/ariac/arm1/gripper/state'
 		_state_machine.userdata.gripper2_status_topic = '/ariac/arm1/gripper/state'
 		_state_machine.userdata.gripper_enabled = False
-		_state_machine.userdata.gripper_attached = False
+		_state_machine.userdata.gripper_attached = True
 		_state_machine.userdata.true_variable = True
 
 		# Additional creation code can be added inside the following tags
@@ -186,7 +186,7 @@ class pick_part_from_binSM(Behavior):
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off},
 										remapping={'action_topic_namespace': 'robot_namespace', 'move_group': 'move_group', 'action_topic': 'action_topic', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:174 y:570
+			# x:213 y:628
 			OperatableStateMachine.add('MoveToBin_2',
 										MoveitToJointsDynAriacState(),
 										transitions={'reached': 'finished', 'planning_failed': 'failed', 'control_failed': 'failed'},
@@ -262,6 +262,13 @@ class pick_part_from_binSM(Behavior):
 										autonomy={'continue': Autonomy.Off, 'fail': Autonomy.Off},
 										remapping={'topic_name': 'gripper2_status_topic', 'enabled': 'False', 'attached': 'False'})
 
+			# x:246 y:452
+			OperatableStateMachine.add('gripper attached?',
+										MessageState(),
+										transitions={'continue': 'movePre_2'},
+										autonomy={'continue': Autonomy.Off},
+										remapping={'message': 'gripper_attached'})
+
 			# x:53 y:209
 			OperatableStateMachine.add('look for part hight',
 										LookupFromTableState(parameter_name='/ariac_tables_unit1', table_name='part_heights', index_title='part', column_title='part_height'),
@@ -276,7 +283,7 @@ class pick_part_from_binSM(Behavior):
 										autonomy={'reached': Autonomy.Off, 'planning_failed': Autonomy.Off, 'control_failed': Autonomy.Off, 'param_error': Autonomy.Off},
 										remapping={'config_name': 'robot_config', 'move_group': 'move_group', 'action_topic_namespace': 'robot_namespace', 'action_topic': 'action_topic', 'robot_name': 'robot_name', 'config_name_out': 'config_name_out', 'move_group_out': 'move_group_out', 'robot_name_out': 'robot_name_out', 'action_topic_out': 'action_topic_out', 'joint_values': 'joint_values', 'joint_names': 'joint_names'})
 
-			# x:208 y:443
+			# x:228 y:549
 			OperatableStateMachine.add('movePre_2',
 										SrdfStateToMoveitAriac(),
 										transitions={'reached': 'MoveToBin_2', 'planning_failed': 'failed', 'control_failed': 'failed', 'param_error': 'failed'},
@@ -311,7 +318,7 @@ class pick_part_from_binSM(Behavior):
 			# x:334 y:329
 			OperatableStateMachine.add('wait for gripper',
 										WaitState(wait_time=1),
-										transitions={'done': 'movePre_2'},
+										transitions={'done': 'gripper attached?'},
 										autonomy={'done': Autonomy.Off})
 
 			# x:1437 y:477
